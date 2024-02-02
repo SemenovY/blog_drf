@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "blog-drf"
+version = "0.1.0"
+description = "Blog"
+authors = ["Semenov Yuriy <info@juriys.ru>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.0.1"
+djangorestframework = "^3.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
