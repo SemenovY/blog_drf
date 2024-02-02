@@ -34,8 +34,8 @@ class BlogPost(models.Model):
         text (str): Текст поста.
         created_at (datetime): Время создания поста.
     """
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     blog = models.ForeignKey(Blog, related_name='posts', on_delete=models.CASCADE)
-    title = models.CharField(max_length=255, validators=[MinLengthValidator(
-        1), validate_whitespace])
+    title = models.CharField(max_length=255, validators=[MinLengthValidator(1), validate_whitespace])
     text = models.TextField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)

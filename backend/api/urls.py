@@ -17,4 +17,5 @@ router.register(r'subscriptions', SubscriptionViewSet, basename='subscription')
 urlpatterns = [
     path("v1/", include(router.urls)),
     path("v1/users/<int:pk>/subscriptions/", SubscriptionViewSet.as_view({'get': 'user_subscriptions'}), name='user-subscription-list'),
+    path("v1/users/<int:pk>/news_feed/", UserViewSet.as_view({'get': 'news_feed'}), name='user-news-feed'),
 ]
