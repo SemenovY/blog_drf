@@ -5,9 +5,9 @@ from users.models import Blog, BlogPost
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('user',)
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'blog', 'created_at',)
+    search_fields = ('title', 'blog__user__username',)
