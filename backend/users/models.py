@@ -1,6 +1,3 @@
-"""
-Кастомный класс пользователя.
-"""
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinLengthValidator
@@ -42,11 +39,3 @@ class BlogPost(models.Model):
         1), validate_whitespace])
     text = models.TextField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-class Subscription(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('user', 'blog')
