@@ -20,6 +20,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = NewsFeedSerializer(news_feed_data, many=True)
         return Response(serializer.data)
 
+
 def get_news_feed_data(user, page):
     subscribed_blogs = user.subscriptions.all()
     blog_posts = BlogPost.objects.filter(blog__in=subscribed_blogs).order_by('-created_at')
