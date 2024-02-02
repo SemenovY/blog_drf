@@ -1,5 +1,6 @@
 from rest_framework import generics
-from .models import Blog, BlogPost
+
+from users.models import Blog, BlogPost
 from .serializers import BlogSerializer, BlogPostSerializer
 
 

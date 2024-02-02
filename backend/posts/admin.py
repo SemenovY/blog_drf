@@ -1,13 +1,13 @@
 from django.contrib import admin
 
-from .models import Blog, BlogPost
+from users.models import Blog, BlogPost
 
 
 @admin.register(Blog)
-class BlogAdmin(admin.Admin):
+class BlogAdmin(admin.ModelAdmin):
     pass
 
 
 @admin.register(BlogPost)
-class BlogPostAdmin(admin.Admin):
+class BlogPostAdmin(admin.ModelAdmin):
     pass

@@ -1,19 +1,24 @@
 from rest_framework import serializers
 
-from users.serializers import CustomUserSerializer
-from .models import Blog, BlogPost
+from users.models import Blog, BlogPost
+from django.contrib.auth import get_user_model
 
 
-class BlogPostSerializer(serializers.Serializer):
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = '__all__'
+
+
+class BlogPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlogPost
         fields = '__all__'
 
 
-class BlogSerializer(serializers.Serializer):
+class BlogSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
     posts = BlogPostSerializer(many=True, read_only=True)
-
 
     class Meta:
         model = Blog
