@@ -12,4 +12,5 @@ class CustomUserAdmin(UserAdmin):
     """
     Этот класс расширяет встроенный UserAdmin для дополнительной настройки в административном интерфейсе Django.
     """
-    pass
+    list_display = ('id', 'username', 'email', 'blog', 'is_staff', 'is_active')
+    search_fields = ('username', 'email')

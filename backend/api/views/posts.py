@@ -3,10 +3,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from api.paginations import NewsFeedPagination
 from api.serializers.posts import BlogPostSerializer, BlogSerializer
-from api.views import users
-# from subscriptions.models import Subscription
 from users.models import Blog, BlogPost
 
 
@@ -18,7 +15,6 @@ class BlogViewSet(viewsets.ModelViewSet):
 class BlogPostViewSet(viewsets.ModelViewSet):
     queryset = BlogPost.objects.all()
     serializer_class = BlogPostSerializer
-    pagination_class = NewsFeedPagination
 
     def perform_create(self, serializer):
         user = self.request.user
