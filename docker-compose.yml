@@ -29,7 +29,7 @@ services:
     volumes_from:
       - app
     command: >
-      sh -c "poetry run celery --workdir=./backend -A backend.celery_app.app worker --loglevel=INFO"
+      sh -c "poetry run celery --workdir=./backend -A backend.celery.app worker --loglevel=INFO"
 
   app:
     build:
