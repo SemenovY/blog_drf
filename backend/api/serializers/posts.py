@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from api.serializers.users import CustomUserSerializer
+from rest_framework import serializers
 from users.models import Blog, BlogPost
 
 
@@ -10,7 +9,7 @@ class BlogPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BlogPost
-        fields = ['id', 'user', 'blog', 'title', 'text', 'created_at']
+        fields = ["id", "user", "blog", "title", "text", "created_at"]
 
 
 class BlogSerializer(serializers.ModelSerializer):
@@ -19,4 +18,4 @@ class BlogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Blog
-        fields = '__all__'
+        fields = "__all__"

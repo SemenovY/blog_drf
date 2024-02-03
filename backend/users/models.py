@@ -1,10 +1,9 @@
-from django.contrib.auth.models import AbstractUser
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.core.validators import MinLengthValidator
-
 from api.constants import MINLENGTHVALIDATOR, TEXT_MAX_LENGTH, TITLE_MAX_LENGTH
 from api.validation import validate_whitespace
+from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.core.validators import MinLengthValidator
+from django.db import models
 
 
 class CustomUser(AbstractUser):
@@ -23,6 +22,7 @@ class Blog(models.Model):
     Attributes:
         user (CustomUser): Пользователь, которому принадлежит блог.
     """
+
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
 
     class Meta:
@@ -40,9 +40,12 @@ class BlogPost(models.Model):
         text (str): Текст поста.
         created_at (datetime): Время создания поста.
     """
+
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    blog = models.ForeignKey(Blog, related_name='posts', on_delete=models.CASCADE)
-    title = models.CharField(max_length=TITLE_MAX_LENGTH, validators=[MinLengthValidator(MINLENGTHVALIDATOR), validate_whitespace])
+    blog = models.ForeignKey(Blog, related_name="posts", on_delete=models.CASCADE)
+    title = models.CharField(
+        max_length=TITLE_MAX_LENGTH, validators=[MinLengthValidator(MINLENGTHVALIDATOR), validate_whitespace]
+    )
     text = models.TextField(max_length=TEXT_MAX_LENGTH)
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
