@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
@@ -11,6 +11,14 @@ from users.models import Blog
 class SubscriptionViewSet(viewsets.ModelViewSet):
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
+
+    @action(detail=True, methods=['get'])
+    def user_subscriptions(self, request, pk=None):
+        # Получаем пользователя по его идентификатору
+        user = self.get_object().user if pk is not None else request.user
+        subscriptions = Subscription.objects.filter(user=user)
+        serializer = SubscriptionSerializer(subscriptions, many=True)
+        return Response(serializer.data)
 
     @action(detail=False, methods=['post'])
     def create_subscription(self, request):
@@ -27,4 +35,4 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
         user = self.request.user
         subscription = get_object_or_404(Subscription, pk=pk, user=user)
         subscription.delete()
-        return Response(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -5,9 +5,12 @@ from users.models import Blog, BlogPost
 
 
 class BlogPostSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
+    blog = serializers.PrimaryKeyRelatedField(queryset=Blog.objects.all())
+
     class Meta:
         model = BlogPost
-        fields = '__all__'
+        fields = ['id', 'user', 'blog', 'title', 'text', 'created_at']
 
 
 class BlogSerializer(serializers.ModelSerializer):
