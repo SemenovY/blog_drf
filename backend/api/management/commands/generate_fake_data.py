@@ -1,14 +1,12 @@
 from random import randint
 
 from django.core.management.base import BaseCommand
-from django.contrib.auth import get_user_model
 from django.utils import timezone
 from faker import Faker
 
 from api.constants import MAX_POSTS_PER_BLOG, NUM_USERS
 from users.models import Blog, BlogPost, CustomUser
 
-User = get_user_model()
 User = CustomUser
 
 

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.core.paginator import Paginator
 from django.db.models import Q
 
-from api.constants import PAGINATION_PAGE_SIZE
+from api.constants import MAX_TOTAL_POSTS, PAGINATION_PAGE_SIZE
 from api.serializers.posts import BlogPostSerializer, CustomUserSerializer
 from subscriptions.models import Subscription
 from users.models import BlogPost, CustomUser
@@ -32,8 +32,21 @@ class UserViewSet(viewsets.ModelViewSet):
 
 def get_news_feed_data(user, page):
     subscribed_blogs = Subscription.objects.filter(user=user).values_list('blog', flat=True)
-
     blog_posts = BlogPost.objects.filter(Q(blog__in=subscribed_blogs) & ~Q(user=user)).order_by('-created_at')
     paginator = Paginator(blog_posts, PAGINATION_PAGE_SIZE)
     paginated_blog_posts = paginator.get_page(page)
+    post_ids_in_page = [post.id for post in paginated_blog_posts.object_list]
+
+    read_post_ids = set(
+        BlogPost.objects.filter(
+            id__in=post_ids_in_page, read=True, user=user
+            ).values_list('id', flat=True)
+        )
+
+    for post in paginated_blog_posts.object_list:
+        post.read = post.id in read_post_ids
+
+    if paginator.count > MAX_TOTAL_POSTS:
+        paginated_blog_posts.paginator.count = MAX_TOTAL_POSTS
+
     return paginated_blog_posts

@@ -45,6 +45,7 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=TITLE_MAX_LENGTH, validators=[MinLengthValidator(MINLENGTHVALIDATOR), validate_whitespace])
     text = models.TextField(max_length=TEXT_MAX_LENGTH)
     created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.blog == self.user.blog:
