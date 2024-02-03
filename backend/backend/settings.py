@@ -5,6 +5,8 @@ Django settings for backend project.
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -120,21 +122,8 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
-# Celery
 CELERY_BROKER_URL = (
     f'redis://{os.environ.get("REDIS_HOST", default="localhost")}:{os.environ.get("REDIS_PORT", default=6379)}/0'
 )
 
-# Email
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_USE_SSL = True
-EMAIL_PORT = os.environ.get("EMAIL_PORT", default=465)
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-OWNER_MAIL = os.environ.get("OWNER_MAIL")
-
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-SERVER_EMAIL = EMAIL_HOST_USER
-EMAIL_ADMIN = EMAIL_HOST_USER
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
