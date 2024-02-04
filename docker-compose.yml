@@ -29,7 +29,7 @@ services:
     volumes_from:
       - app
     command: >
-      sh -c "poetry run celery --workdir=$(pwd)/backend -A backend.celery.app worker --loglevel=INFO"
+      sh -c "poetry run celery --workdir=$(pwd)/backend -A backend.celery.app worker --loglevel=INFO -B -E --scheduler django_celery_beat.schedulers:DatabaseScheduler"
 
   beat:
     build:
@@ -40,7 +40,7 @@ services:
     volumes_from:
       - app
     command: >
-      sh -c "poetry run celery --workdir=$(pwd)/backend -A backend.celery.app beat --loglevel=INFO"
+      sh -c "poetry run celery --workdir=$(pwd)/backend -A backend.celery.app beat --loglevel=INFO --schedule=/app/celerybeat-schedule"
 
   app:
     build:

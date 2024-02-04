@@ -15,7 +15,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -123,11 +124,17 @@ SPECTACULAR_SETTINGS = {
 }
 
 CELERY_BROKER_URL = (
-    f'redis://{os.environ.get("REDIS_HOST", default="localhost")}:{os.environ.get("REDIS_PORT", default=6379)}/0'
+    f'redis://{os.environ.get("REDIS_HOST", default="redis")}:{os.environ.get("REDIS_PORT", default=6379)}/0'
 )
 CELERY_RESULT_BACKEND = (
-    f"redis://" f'{os.environ.get("REDIS_HOST", "localhost")}:' f'{os.environ.get("REDIS_PORT", 6379)}/0'
+    f"redis://" f'{os.environ.get("REDIS_HOST", "redis")}:' f'{os.environ.get("REDIS_PORT", 6379)}/0'
 )
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24
+CELERY_TIMEZONE = "UTC"
+
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
