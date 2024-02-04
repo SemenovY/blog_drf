@@ -2,7 +2,7 @@ from api.constants import MAX_TOTAL_POSTS, PAGINATION_PAGE_SIZE
 from api.serializers.posts import BlogPostSerializer, CustomUserSerializer
 from django.core.paginator import Paginator
 from django.db.models import Q
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -10,11 +10,25 @@ from subscriptions.models import Subscription
 from users.models import BlogPost, CustomUser
 
 
+@extend_schema(
+    tags=["Пользователи"],
+    methods=[
+        "GET",
+    ],
+    description="Персональная лента новостей",
+)
+@extend_schema_view(
+    news_feed=extend_schema(
+        summary="Список новостей пользователя",
+    ),
+    own_posts=extend_schema(
+        summary="Собственные посты",
+    ),
+)
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
-    @extend_schema(responses={200: BlogPostSerializer(many=True)}, description="Get news feed for a user.")
     @action(detail=True, methods=["get"])
     def news_feed(self, request, pk=None):
         user = self.get_object()
@@ -23,7 +37,6 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = BlogPostSerializer(news_feed_data, many=True)
         return Response(serializer.data)
 
-    @extend_schema(responses={200: BlogPostSerializer(many=True)}, description="Get own posts for a user.")
     @action(detail=True, methods=["get"], url_path="own-posts")
     def own_posts(self, request, pk=None):
         user = self.get_object()
